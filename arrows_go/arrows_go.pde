@@ -1,9 +1,18 @@
+import java.util.LinkedList;
 Arrows arrows;
+LinkedList<Food> foodList;
+final int FOOD_SIZE = 10;
 void setup() {
   size(500, 500);
   Point c = new Point(width/2, height/2);
   Vector v = new Vector(0, -width/10);
   arrows = new Arrows(c, v);
+  
+  foodList = new LinkedList<Food>();
+  for(int i = 0; i < FOOD_SIZE; i++){
+    Food foodPoint = new Food( new Point(random(0, width), random(0, height)) );
+    foodList.add(foodPoint);
+  }
 }
 
 void draw() {
@@ -61,5 +70,23 @@ void keyPressed() {
     if (keyCode == LEFT) {
       arrows.spin(-PI/20);
     }
+  }
+}
+
+class Food{
+  public Point pos;
+  public int passedFrame;
+  public Food(){
+    pos.x = 0; pos.y = 0; passedFrame = 0;
+  }
+  public Food(Point pos){
+    this.pos.x = pos.x; this.pos.y = pos.y; passedFrame = 0;
+  }
+  public int update(Arrows arrow){
+    passedFrame++;
+    if(arrow.touched(pow){
+      return 100-passedFrame;
+    }
+    return 0;
   }
 }
