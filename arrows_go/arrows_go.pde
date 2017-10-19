@@ -5,8 +5,7 @@ boolean KEY_LEFT = false;
 void setup() {
   size(500, 500);
   Point c = new Point(width/2, height/2);
-  Vector v = new Vector(0, -width/10);
-  arrows = new Arrows(c, v);
+  arrows = new Arrows(c, width/10);
 }
 
 void draw() {
@@ -20,6 +19,9 @@ class Point {
   Point(float x, float y) {
     this.x=x;
     this.y=y;
+  }
+  float dist(Point a){
+    return sqrt((x-a.x)*(x-a.x)+(y-a.y)*(y-a.y));
   }
 };
 
@@ -35,10 +37,12 @@ class Vector extends Point {
 class Arrows {
   Point c;
   Vector v, s;
-  Arrows(Point c, Vector v) {
+  float sz;
+  Arrows(Point c, float sz) {
     this.c=c;
-    this.v=v;
+    this.v=new Vector(0, -sz);
     s=new Vector(0, 0);
+    this.sz=sz;
   }
   void move() {
     if (KEY_UP) {
@@ -50,7 +54,7 @@ class Arrows {
     if (KEY_LEFT) {
       arrows.spin(-PI/20);
     }
-    
+
     float ny=c.y+s.y/10;
     float nx=c.x+s.x/10;
     if (0<=ny&&ny<=height) c.y=ny;
@@ -61,6 +65,7 @@ class Arrows {
   void draw() {
     move();
     line(c.x, c.y, c.x+v.x, c.y+v.y);
+    ellipse(c.x+v.x/6*5, c.y+v.y/6*5, sz/3, sz/3);
   }
   void spin(float th) {
     v=v.spin(th);
@@ -68,6 +73,9 @@ class Arrows {
   void forward() {
     s.x+=v.x/10;
     s.y+=v.y/10;
+  }
+  boolean isTouched(Point p){
+      return c.dist(p)<=sz/3; 
   }
 };
 
