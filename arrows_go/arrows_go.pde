@@ -26,6 +26,9 @@ void draw() {
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
     Food f = it.next();
     f.draw(arrows);
+    if(f.crushed){
+      foodList.remove();
+    }
   }
 }
 
@@ -126,6 +129,7 @@ void keyReleased() {
 class Food {
   public Point pos;
   public int passedFrame;
+  public boolean crushed;
   color b = color(0, 0, 0);
   color c = color(100, 200, 100); 
   public Food() {
@@ -133,6 +137,7 @@ class Food {
     pos.x = 0; 
     pos.y = 0; 
     passedFrame = 0;
+    crushed = false;
   }
   public Food(Point pos) {
     this.pos = new Point(0, 0);
@@ -140,16 +145,13 @@ class Food {
     this.pos.y = pos.y; 
     passedFrame = 0;
   }
-  public int update(Arrows arrows) {
-    passedFrame++;
-    if (arrows.isTouched(pos)) {
-      return 100-passedFrame;
-    }
-    return 0;
-  }
   void draw(Arrows arrows) {
-    if (arrows.isTouched(pos)) stroke(c);
-    else stroke(b);
+    if (arrows.isTouched(pos)){
+      stroke(c);
+      crushed = true;
+    }else{
+      stroke(b);
+    }
     ellipse(pos.x, pos.y, 20, 20);
   }
 }
