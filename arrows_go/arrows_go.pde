@@ -33,7 +33,7 @@ void draw() {
   
   if(foodList.isEmpty()){
     background(0);
-    text("WoW!", 20, 20);
+    text("WoW! What a clever man you are! you gonna owe future Japan and whole WORLD!\n Take your genious with you, and help all over the world! That would\n take your happines to the heaven! Yeah! Good luck!", 20, 20);
   }
 }
 
