@@ -75,7 +75,7 @@ void draw() {
       exit();
     }
     text(str, 0, 0);
-    text("Press R to restart", width/2, height/2);
+    text("Press R to restart", width/2-50, height/2);
     cleared=true;
   }
 }
@@ -132,11 +132,12 @@ class Arrows {
     move();
     stroke(0);  
     line(c.x, c.y, c.x+v.x, c.y+v.y);
+    float p=1.0/3.0;
     triangle(
       c.x+v.x, c.y+v.y, 
-      c.x+v.x/4*3+v.y/4, c.y+v.y/4*3-v.x/4, 
-      c.x+v.x/4*3-v.y/4, c.y+v.y/4*3+v.x/4);
-    //ellipse(c.x+v.x/6*5, c.y+v.y/6*5, sz/3, sz/3);
+      c.x+v.x*(1.0-p)+v.y*p, c.y+v.y*(1.0-p)-v.x*p, 
+      c.x+v.x*(1.0-p)-v.y*p, c.y+v.y*(1.0-p)+v.x*p);
+    ellipse(c.x+v.x/6*5, c.y+v.y/6*5, sz/3, sz/3);
   }
   void spin(float th) {
     v=v.spin(th);
