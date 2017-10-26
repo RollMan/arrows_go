@@ -1,5 +1,12 @@
 import java.util.LinkedList;
 import java.util.Iterator;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+
+import java.lang.Exception;
+
 Arrows arrows;
 LinkedList<Food> foodList;
 final int FOOD_SIZE = 10;
@@ -7,6 +14,8 @@ boolean KEY_UP = false;
 boolean KEY_RIGHT = false;
 boolean KEY_LEFT = false;
 int st;
+
+File finishMessageFile;
 void setup() {
   st=millis();
   size(500, 500);
@@ -23,29 +32,49 @@ void setup() {
 }
 
 void draw() {
-  
+
   background(255);
-  
-  
+
+
   int m = millis();
   fill(0);
   stroke(0);
-  text("TIME: "+(m-st)/100,20,20);
+  text("TIME: "+(m-st)/100, 20, 20);
   //println(""+(m-st)/100);
   fill(255);
-  
+
   arrows.draw();
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
     Food f = it.next();
     f.draw(arrows);
-    if(f.crushed){
+    if (f.crushed) {
       it.remove();
     }
   }
-  
-  if(foodList.isEmpty()){
-    background(0);
-    text("WoW! What a clever man you are! you gonna owe future Japan and whole WORLD!\n Take your genious with you, and help all over the world! That would\n take your happines to the heaven! Yeah! Good luck!", 20, 20);
+
+  if (foodList.isEmpty()) {
+    try {
+      background(0);
+      finishMessageFile = new File("finishMessage.txt");
+      BufferedReader finishMessageBufferedReader = new BufferedReader(new FileReader(finishMessageFile));
+      String str = new String();
+      String line;
+      while ((line = finishMessageBufferedReader.readLine()) != null) {
+        str += line;
+      }
+      finishMessageBufferedReader.close();
+
+      while (true) {
+        double x = 0, y = 0;
+        text(str, (int)x, (int)y);
+        x += 0.1; 
+        y += 0.1;
+      }
+    }    
+    catch(Exception e) {
+      print(e.getMessage());
+      exit();
+    }
   }
 }
 
@@ -163,10 +192,10 @@ class Food {
     passedFrame = 0;
   }
   void draw(Arrows arrows) {
-    if (arrows.isTouched(pos)){
+    if (arrows.isTouched(pos)) {
       stroke(c);
       crushed = true;
-    }else{
+    } else {
       stroke(b);
     }
     ellipse(pos.x, pos.y, 20, 20);
