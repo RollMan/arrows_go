@@ -27,8 +27,13 @@ void draw() {
     Food f = it.next();
     f.draw(arrows);
     if(f.crushed){
-      foodList.remove();
+      it.remove();
     }
+  }
+  
+  if(foodList.isEmpty()){
+    background(0);
+    text("WoW!", 20, 20);
   }
 }
 
