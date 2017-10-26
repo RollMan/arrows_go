@@ -6,7 +6,9 @@ final int FOOD_SIZE = 10;
 boolean KEY_UP = false;
 boolean KEY_RIGHT = false;
 boolean KEY_LEFT = false;
+int st;
 void setup() {
+  st=millis();
   size(500, 500);
   Point c = new Point(width/2, height/2);
 
@@ -20,6 +22,12 @@ void setup() {
 }
 
 void draw() {
+  int m = millis();
+  fill(0);
+  text(""+(m-st)/100,20,20);
+  println(""+(m-st)/100);
+  fill(255);
+  
   background(255);
   frameRate(60);
   arrows.draw();
@@ -27,7 +35,7 @@ void draw() {
     Food f = it.next();
     f.draw(arrows);
     if(f.crushed){
-      foodList.remove();
+      it.remove();
     }
   }
 }
