@@ -118,13 +118,14 @@ class Arrows {
   void draw() {
     move();
     stroke(0);  
+    float p=3.0/8.0;
     line(c.x, c.y, c.x+v.x, c.y+v.y);
-    float p=2.0/7.0;
+    line(c.x+v.y*p/2, c.y-v.x*p/2, c.x-v.y*p/2, c.y+v.x*p/2);
     triangle(
       c.x+v.x, c.y+v.y, 
       c.x+v.x*(1.0-p)+v.y*p, c.y+v.y*(1.0-p)-v.x*p, 
       c.x+v.x*(1.0-p)-v.y*p, c.y+v.y*(1.0-p)+v.x*p);
-    ellipse(c.x+v.x/6*5, c.y+v.y/6*5, sz/3, sz/3);
+    ellipse(c.x+v.x*(1-p/2), c.y+v.y*(1-p/2), sz*p, sz*p);
   }
   void spin(float th) {
     v=v.spin(th);
