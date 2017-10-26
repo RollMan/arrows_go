@@ -9,9 +9,9 @@ boolean KEY_LEFT = false;
 void setup() {
   size(500, 500);
   Point c = new Point(width/2, height/2);
-  
+
   foodList = new LinkedList<Food>();
-  for(int i = 0; i < FOOD_SIZE; i++){
+  for (int i = 0; i < FOOD_SIZE; i++) {
     println(random(0, width));
     Food foodPoint = new Food( new Point(random(0, width), random(0, height)) );
     foodList.add(foodPoint);
@@ -23,9 +23,9 @@ void draw() {
   background(255);
   frameRate(60);
   arrows.draw();
-  for(Iterator<Food> it = foodList.iterator(); it.hasNext();){
+  for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
     Food f = it.next();
-    ellipse(f.pos.x, f.pos.y, 20, 20);
+    f.draw(arrows);
   }
 }
 
@@ -35,7 +35,7 @@ class Point {
     this.x=x;
     this.y=y;
   }
-  float dist(Point a){
+  float dist(Point a) {
     return sqrt((x-a.x)*(x-a.x)+(y-a.y)*(y-a.y));
   }
 };
@@ -79,6 +79,7 @@ class Arrows {
   }
   void draw() {
     move();
+    stroke(0);  
     line(c.x, c.y, c.x+v.x, c.y+v.y);
     ellipse(c.x+v.x/6*5, c.y+v.y/6*5, sz/3, sz/3);
   }
@@ -89,8 +90,9 @@ class Arrows {
     s.x+=v.x/10;
     s.y+=v.y/10;
   }
-  boolean isTouched(Point p){
-      return c.dist(p)<=sz/3; 
+  boolean isTouched(Point p) {
+    Point o = new Point(c.x+v.x/6*5, c.y+v.y/6*5);
+    return o.dist(p)<=sz/3;
   }
 };
 
@@ -121,22 +123,33 @@ void keyReleased() {
   }
 }
 
-class Food{
+class Food {
   public Point pos;
   public int passedFrame;
-  public Food(){
+  color b = color(0, 0, 0);
+  color c = color(100, 200, 100); 
+  public Food() {
     this.pos = new Point(0, 0);
-    pos.x = 0; pos.y = 0; passedFrame = 0;
+    pos.x = 0; 
+    pos.y = 0; 
+    passedFrame = 0;
   }
-  public Food(Point pos){
+  public Food(Point pos) {
     this.pos = new Point(0, 0);
-    this.pos.x = pos.x; this.pos.y = pos.y; passedFrame = 0;
+    this.pos.x = pos.x; 
+    this.pos.y = pos.y; 
+    passedFrame = 0;
   }
-  public int update(Arrows arrow){
+  public int update(Arrows arrows) {
     passedFrame++;
-    if(arrow.isTouched(pos)){
+    if (arrows.isTouched(pos)) {
       return 100-passedFrame;
     }
     return 0;
+  }
+  void draw(Arrows arrows) {
+    if (arrows.isTouched(pos)) stroke(c);
+    else stroke(b);
+    ellipse(pos.x, pos.y, 20, 20);
   }
 }
