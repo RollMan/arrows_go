@@ -19,17 +19,21 @@ void setup() {
     foodList.add(foodPoint);
   }
   arrows = new Arrows(c, width/10);
+  frameRate(60);
 }
 
 void draw() {
-  int m = millis();
-  fill(0);
-  text(""+(m-st)/100,20,20);
-  println(""+(m-st)/100);
-  fill(255);
   
   background(255);
-  frameRate(60);
+  
+  
+  int m = millis();
+  fill(0);
+  stroke(0);
+  text("TIME: "+(m-st)/100,20,20);
+  //println(""+(m-st)/100);
+  fill(255);
+  
   arrows.draw();
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
     Food f = it.next();
