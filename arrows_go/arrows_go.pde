@@ -59,33 +59,22 @@ void draw() {
   }
 
   if (foodList.isEmpty()) {
+    String str = new String();
     try {
-/*
       background(0);
       finishMessageFile = new File("finishMessage.txt");
       BufferedReader finishMessageBufferedReader = new BufferedReader(new FileReader(finishMessageFile));
-      String str = new String();
       String line;
       while ((line = finishMessageBufferedReader.readLine()) != null) {
         str += line;
       }
       finishMessageBufferedReader.close();
-
-      while (true) {
-        double x = 0, y = 0;
-        text(str, (int)x, (int)y);
-        x += 0.1; 
-        y += 0.1;
-      }
-      */
     }    
     catch(Exception e) {
       print(e.getMessage());
       exit();
     }
-    background(0);
-    text("WoW! What a clever man you are! you gonna owe future Japan and whole WORLD!\n Take your genious with you, and help all over the world! That would\n take your happines to the heaven! Yeah! Good luck!", 20, 20);
-
+    text(str, 0, 0);
     text("Press R to restart", width/2, height/2);
     cleared=true;
   }
