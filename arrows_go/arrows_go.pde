@@ -1,10 +1,6 @@
 import java.util.LinkedList;
 import java.util.Iterator;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
-
 import java.lang.Exception;
 
 Arrows arrows;
@@ -37,6 +33,9 @@ void init() {
   }
 }
 
+int mx = 0, my = 0;
+
+
 void draw() {
 
   background(255);
@@ -59,27 +58,15 @@ void draw() {
   }
 
   if (foodList.isEmpty()) {
-    String str = new String();
-    try {
-      background(0);
-      finishMessageFile = new File("finishMessage.txt");
-      BufferedReader finishMessageBufferedReader = new BufferedReader(new FileReader(finishMessageFile));
-      String line;
-      while ((line = finishMessageBufferedReader.readLine()) != null) {
-        str += line;
-      }
-      finishMessageBufferedReader.close();
-    }    
-    catch(Exception e) {
-      print(e.getMessage());
-      exit();
-    }
-    text(str, 0, 0);
-    text("Press R to restart", width/2-50, height/2);
+    String[] stra = loadStrings("./finishMessage.txt");
+    String str = String.join("\n", stra);
+
+    background(0);
+    text(str, mx, my--);
+    text("Press R to restart", width/2, height/2);
     cleared=true;
   }
 }
-
 class Point {
   float x, y;
   Point(float x, float y) {
@@ -132,7 +119,7 @@ class Arrows {
     move();
     stroke(0);  
     line(c.x, c.y, c.x+v.x, c.y+v.y);
-    float p=1.0/3.0;
+    float p=2.0/7.0;
     triangle(
       c.x+v.x, c.y+v.y, 
       c.x+v.x*(1.0-p)+v.y*p, c.y+v.y*(1.0-p)-v.x*p, 
