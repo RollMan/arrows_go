@@ -10,7 +10,7 @@ void setup() {
 
 void draw() {
   background(255);
-  frameRate(30);
+  frameRate(60);
   arrows.draw();
 }
 
@@ -49,14 +49,14 @@ class Arrows {
       arrows.forward();
     }
     if (KEY_RIGHT) {
-      arrows.spin(PI/20);
+      arrows.spin(PI/40);
     }
     if (KEY_LEFT) {
-      arrows.spin(-PI/20);
+      arrows.spin(-PI/40);
     }
 
-    float ny=c.y+s.y/10;
-    float nx=c.x+s.x/10;
+    float ny=c.y+s.y/20;
+    float nx=c.x+s.x/20;
     if (0<=ny&&ny<=height) c.y=ny;
     if (0<=nx&&nx<=width) c.x=nx;
     s.x*=0.9;
