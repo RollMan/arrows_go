@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.Iterator;
 Arrows arrows;
 LinkedList<Food> foodList;
 final int FOOD_SIZE = 10;
@@ -8,11 +9,10 @@ boolean KEY_LEFT = false;
 void setup() {
   size(500, 500);
   Point c = new Point(width/2, height/2);
-  Vector v = new Vector(0, -width/10);
-  arrows = new Arrows(c, v);
   
   foodList = new LinkedList<Food>();
   for(int i = 0; i < FOOD_SIZE; i++){
+    println(random(0, width));
     Food foodPoint = new Food( new Point(random(0, width), random(0, height)) );
     foodList.add(foodPoint);
   }
@@ -23,6 +23,10 @@ void draw() {
   background(255);
   frameRate(30);
   arrows.draw();
+  for(Iterator<Food> it = foodList.iterator(); it.hasNext();){
+    Food f = it.next();
+    ellipse(f.pos.x, f.pos.y, 20, 20);
+  }
 }
 
 class Point {
@@ -121,14 +125,16 @@ class Food{
   public Point pos;
   public int passedFrame;
   public Food(){
+    this.pos = new Point(0, 0);
     pos.x = 0; pos.y = 0; passedFrame = 0;
   }
   public Food(Point pos){
+    this.pos = new Point(0, 0);
     this.pos.x = pos.x; this.pos.y = pos.y; passedFrame = 0;
   }
   public int update(Arrows arrow){
     passedFrame++;
-    if(arrow.touched(pow){
+    if(arrow.isTouched(pos)){
       return 100-passedFrame;
     }
     return 0;
