@@ -9,17 +9,25 @@ import java.lang.Exception;
 
 Arrows arrows;
 LinkedList<Food> foodList;
-final int FOOD_SIZE = 10;
+final int FOOD_SIZE = 1;
 boolean KEY_UP = false;
 boolean KEY_RIGHT = false;
 boolean KEY_LEFT = false;
 int st;
 
 File finishMessageFile;
+boolean cleared;
 void setup() {
-  st=millis();
   size(500, 500);
+  frameRate(60);
+  init();
+}
+
+void init() {
+  st=millis();
+  cleared = false;
   Point c = new Point(width/2, height/2);
+  arrows = new Arrows(c, width/10);
 
   foodList = new LinkedList<Food>();
   for (int i = 0; i < FOOD_SIZE; i++) {
@@ -27,8 +35,6 @@ void setup() {
     Food foodPoint = new Food( new Point(random(0, width), random(0, height)) );
     foodList.add(foodPoint);
   }
-  arrows = new Arrows(c, width/10);
-  frameRate(60);
 }
 
 void draw() {
@@ -54,6 +60,7 @@ void draw() {
 
   if (foodList.isEmpty()) {
     try {
+/*
       background(0);
       finishMessageFile = new File("finishMessage.txt");
       BufferedReader finishMessageBufferedReader = new BufferedReader(new FileReader(finishMessageFile));
@@ -70,11 +77,17 @@ void draw() {
         x += 0.1; 
         y += 0.1;
       }
+      */
     }    
     catch(Exception e) {
       print(e.getMessage());
       exit();
     }
+    background(0);
+    text("WoW! What a clever man you are! you gonna owe future Japan and whole WORLD!\n Take your genious with you, and help all over the world! That would\n take your happines to the heaven! Yeah! Good luck!", 20, 20);
+
+    text("Press R to restart", width/2, height/2);
+    cleared=true;
   }
 }
 
@@ -130,7 +143,11 @@ class Arrows {
     move();
     stroke(0);  
     line(c.x, c.y, c.x+v.x, c.y+v.y);
-    ellipse(c.x+v.x/6*5, c.y+v.y/6*5, sz/3, sz/3);
+    triangle(
+      c.x+v.x, c.y+v.y, 
+      c.x+v.x/4*3+v.y/4, c.y+v.y/4*3-v.x/4, 
+      c.x+v.x/4*3-v.y/4, c.y+v.y/4*3+v.x/4);
+    //ellipse(c.x+v.x/6*5, c.y+v.y/6*5, sz/3, sz/3);
   }
   void spin(float th) {
     v=v.spin(th);
@@ -155,6 +172,12 @@ void keyPressed() {
     }
     if (keyCode == LEFT) {
       KEY_LEFT=true;
+    }
+  }
+  if (keyCode == 'R') {
+    println("R"); 
+    if (cleared) {
+      init();
     }
   }
 }
