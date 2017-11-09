@@ -5,3 +5,21 @@ application.linux64
 application.windows32
 application.windows64
 application.macosx
+### https://raw.github.com/github/gitignore/2b7d841c01806236d26e81f512095717396ebcb8/Global/Vim.gitignore
+
+# Swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+
+# Session
+Session.vim
+
+# Temporary
+.netrwhist
+*~
+# Auto-generated tag files
+tags
+
+
