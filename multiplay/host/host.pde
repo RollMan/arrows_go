@@ -111,13 +111,28 @@ void draw_PLAY() {
   arrows.draw();
 
 
-
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
     Food f = it.next();
     f.draw(arrows);
     if (f.crushed) {
       it.remove();
     }
+  }
+
+  if(guest != null){
+    JSONArray foods = new JSONArray();
+    int idx = 0;
+    for(Iterator<Food> it = foodList.iterator(); it.hasNext();){
+      Food f = it.next();
+      JSONObject fjson = new JSONObject();
+      fjson.setFloat("x", f.pos.x);
+      fjson.setFloat("y", f.pos.y);
+
+      foods.setJSONObject(idx, fjson);
+      idx++;
+    }
+    JSONObject sending_json = new JSONObject();
+    sending_json.setJSONArray("foods", foods);
   }
 
 /*
@@ -140,6 +155,18 @@ void draw() {
     draw_PLAY();
     break;
   }
+}
+
+class JSON {
+  String json;
+  public JSON(){
+    json = new String();
+  }
+  public JSON(String str){
+    this.json = str;
+  }
+  public setInt()
+    TODO
 }
 class Point {
   float x, y;
