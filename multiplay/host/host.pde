@@ -83,6 +83,11 @@ void draw_PLAY() {
   //println(""+(m-st)/100);
   fill(255);
 
+  /*
+   * # Server part
+   * - When request comes, transmit data
+   *
+  */
   Client guest = host.available();
   if(guest != null){
     String received_str = guest.readStringUntil('\n');
@@ -91,20 +96,32 @@ void draw_PLAY() {
       if(received_json == null){
         println("Received data could not be parsed.");
       }else{
-        float x = received_json.getInt("x");
-        float y = received_json.getInt("y");
-        float vx = received_json.getInt("vx");
-        float vy = received_json.getInt("vy");
-        float sx = received_json.getInt("sx");
-        float sy = received_json.getInt("sy");
-        float sz = received_json.getInt("sz");
-        float rt = received_json.getInt("rt");
+        // Receive data
+        float x = received_json.getFloat("x");
+        float y = received_json.getFloat("y");
+        float vx = received_json.getFloat("vx");
+        float vy = received_json.getFloat("vy");
+        float sx = received_json.getFloat("sx");
+        float sy = received_json.getFloat("sy");
+        float sz = received_json.getFloat("sz");
+        float rt = received_json.getFloat("rt");
         Arrows newone = new Arrows(new Point(x, y),
                                    new Vector(vx, vy),
                                    new Vector(sx, sy),
                                    sz, rt);
 
+        // Because make it not to disappear when data haven't reached,
+        // draw is out of scope.
         arrows = newone;
+
+        // Transmit data
+        JSONObject t_json = JSONObject();
+        JSONArray coordinates = new JSONArray();
+        for(Iterator<Food> it = foodList.iterator(); it.hasNext()){
+          Food 
+          JSONObject coord = new JSONObject();
+          coord.setFloat(it.x)
+        }
       }
     }
   }
