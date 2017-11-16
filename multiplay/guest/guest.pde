@@ -1,3 +1,4 @@
+import processing.net.*;
 import java.util.LinkedList;
 import java.util.Iterator;
 
@@ -12,6 +13,9 @@ boolean KEY_LEFT = false;
 long st, en;
 int sw;
 
+Client guest;
+final int PORT = 25565;
+
 File finishMessageFile;
 boolean cleared;
 String str;
@@ -22,6 +26,8 @@ void setup() {
   String[] stra = loadStrings("./finishMessage.txt");
   str = String.join("\n", stra);
   sw=GAME.START;
+
+  guest = new Client(this, "127.0.0.1", PORT);
 }
 
 void init() {
@@ -76,6 +82,21 @@ void draw_PLAY() {
   fill(255);
 
   arrows.draw();
+
+
+  JSONObject json = new JSONObject();
+  json.setFloat("x", arrows.c.x);
+  json.setFloat("y", arrows.c.x);
+  json.setFloat("vx", arrows.v.x);
+  json.setFloat("vy", arrows.v.x);
+  json.setFloat("sx", arrows.s.x);
+  json.setFloat("sy", arrows.s.x);
+  json.setFloat("sz", arrows.sz);
+  json.setFloat("rt", arrows.rt);
+  println(json.toString().replaceAll("¥r¥n", " "));
+  //guest.write(json.toString().replaceAll("¥n", " "));
+
+
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
     Food f = it.next();
     f.draw(arrows);
