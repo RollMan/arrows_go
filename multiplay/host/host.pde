@@ -157,17 +157,6 @@ void draw() {
   }
 }
 
-class JSON {
-  String json;
-  public JSON(){
-    json = new String();
-  }
-  public JSON(String str){
-    this.json = str;
-  }
-  public setInt()
-    TODO
-}
 class Point {
   float x, y;
   Point(float x, float y) {
