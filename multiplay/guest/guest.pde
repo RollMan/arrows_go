@@ -93,8 +93,9 @@ void draw_PLAY() {
   json.setFloat("sy", arrows.s.x);
   json.setFloat("sz", arrows.sz);
   json.setFloat("rt", arrows.rt);
-  println(json.toString().replaceAll("¥r¥n", " "));
-  //guest.write(json.toString().replaceAll("¥n", " "));
+  String nl = System.getProperty("line.separator");
+  println(json.toString().replaceAll(nl, " ")+nl);
+  guest.write(json.toString().replaceAll(nl, " ")+nl);
 
 
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
