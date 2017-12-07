@@ -86,11 +86,11 @@ void draw_PLAY() {
 
   JSONObject json = new JSONObject();
   json.setFloat("x", arrows.c.x);
-  json.setFloat("y", arrows.c.x);
+  json.setFloat("y", arrows.c.y);
   json.setFloat("vx", arrows.v.x);
-  json.setFloat("vy", arrows.v.x);
+  json.setFloat("vy", arrows.v.y);
   json.setFloat("sx", arrows.s.x);
-  json.setFloat("sy", arrows.s.x);
+  json.setFloat("sy", arrows.s.y);
   json.setFloat("sz", arrows.sz);
   json.setFloat("rt", arrows.rt);
   String nl = System.getProperty("line.separator");
