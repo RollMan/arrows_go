@@ -105,6 +105,25 @@ void draw_PLAY() {
                                    sz, rt);
 
         arrows = newone;
+
+
+        JSONArray foods = new JSONArray();
+        int idx = 0;
+        for(Iterator<Food> it = foodList.iterator(); it.hasNext();){
+          Food f = it.next();
+          JSONObject fjson = new JSONObject();
+          fjson.setFloat("x", f.pos.x);
+          fjson.setFloat("y", f.pos.y);
+
+          foods.setJSONObject(idx, fjson);
+          idx++;
+        }
+        JSONObject sending_json = new JSONObject();
+        sending_json.setJSONArray("food", foods);
+
+        String nl = System.getProperty("line.separator");
+        guest.write(sending_json.toString().replaceAll(nl, " ")+nl);
+        print(sending_json.toString());
       }
     }
   }
@@ -120,19 +139,6 @@ void draw_PLAY() {
   }
 
   if(guest != null){
-    JSONArray foods = new JSONArray();
-    int idx = 0;
-    for(Iterator<Food> it = foodList.iterator(); it.hasNext();){
-      Food f = it.next();
-      JSONObject fjson = new JSONObject();
-      fjson.setFloat("x", f.pos.x);
-      fjson.setFloat("y", f.pos.y);
-
-      foods.setJSONObject(idx, fjson);
-      idx++;
-    }
-    JSONObject sending_json = new JSONObject();
-    sending_json.setJSONArray("foods", foods);
   }
 
 /*
