@@ -27,6 +27,7 @@ void setup() {
   str = String.join("\n", stra);
   sw=GAME.START;
 
+  //guest = new Client(this, "192.168.43.194", PORT);
   guest = new Client(this, "127.0.0.1", PORT);
 }
 
@@ -38,11 +39,13 @@ void init() {
   arrows = new Arrows(c, width/10);
 
   foodList = new LinkedList<Food>();
-  for (int i = 0; i < FOOD_SIZE; i++) {
-    println(random(0, width));
-    Food foodPoint = new Food( new Point(random(0, width), random(0, height)) );
-    foodList.add(foodPoint);
-  }
+  /*
+   for (int i = 0; i < FOOD_SIZE; i++) {
+   println(random(0, width));
+   Food foodPoint = new Food( new Point(random(0, width), random(0, height)) );
+   foodList.add(foodPoint);
+   }
+   */
 }
 
 int mx = 0, my = 0;
@@ -97,6 +100,24 @@ void draw_PLAY() {
   println(json.toString().replaceAll(nl, " ")+nl);
   guest.write(json.toString().replaceAll(nl, " ")+nl);
 
+  {
+    String received_str = guest.readStringUntil('\n');
+    if (received_str != null) {
+      JSONObject received_json = parseJSONObject(received_str);
+      if (received_json == null) {
+        println("Received data could not be parsed.");
+      } else {
+        foodList = new LinkedList<Food>();  
+        JSONArray items = received_json.getJSONArray("food");
+        for (int i=0; i < items.size(); i++) {
+          JSONObject item = items.getJSONObject(i);
+          float x=item.getFloat("x");
+          float y=item.getFloat("y");
+          foodList.add(new Food(new Point(x, y)));
+        }
+      }
+    }
+  }
 
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
     Food f = it.next();
@@ -106,7 +127,7 @@ void draw_PLAY() {
     }
   }
 
-  if (foodList.isEmpty()) {
+  if (false && foodList.isEmpty()) {
     en = m;
     sw = GAME.END;
   }
