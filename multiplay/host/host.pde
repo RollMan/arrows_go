@@ -123,7 +123,6 @@ void draw_PLAY() {
 
         String nl = System.getProperty("line.separator");
         guest.write(sending_json.toString().replaceAll(nl, " ")+nl);
-        print(sending_json.toString());
       }
     }
   }
