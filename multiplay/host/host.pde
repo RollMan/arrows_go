@@ -336,3 +336,40 @@ class Food {
     ellipse(pos.x, pos.y, 20, 20);
   }
 }
+class Game {
+  public int TOTAL;
+  public int current;
+  public int TLIMIT;
+  public int t;
+  public int grabbed;
+  public Game(){
+    TOTAL = 10;
+    current = 0;
+    TLIMIT = 30*3;
+    t = 0;
+    grabbed = 0;
+  }
+  public Game(int total, int tlimit){
+    TOTAL = total;
+    current = 0;
+    TLIMIT = tlimit;
+    t = TLIMIT;
+    grabbed = 0;
+  }
+
+  public String update(boolean grabbed){
+    self.grabbed += grabbed;
+    t--;
+    if(t == 0){
+      t = TLIMIT;
+      current++;
+      if(current == TOTAL){
+        return "FIN";
+      }else{
+        return "TL";
+      }
+    }else{
+      return "None";
+    }
+  }
+}
