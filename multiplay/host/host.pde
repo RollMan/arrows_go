@@ -356,7 +356,7 @@ class Game {
     TOTAL = 10;
     current = 0;
     TLIMIT = 30*3;
-    t = 0;
+    t = TLIMIT;
     grabbed = 0;
   }
   public Game(int total, int tlimit){
