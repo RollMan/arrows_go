@@ -26,12 +26,13 @@ void setup() {
   init();
   String[] stra = loadStrings("./finishMessage.txt");
   str = String.join("\n", stra);
-  sw=GAME.START;
 
   host = new Server(this, PORT);
 }
 
 void init() {
+  sw=GAME.START;
+
   st=millis();
   en=st*100;
   cleared = false;
@@ -136,15 +137,20 @@ void draw_PLAY() {
   arrows.draw();
 
 
+  String game_state;
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
     Food f = it.next();
     f.draw(arrows);
     if (f.crushed) {
-      game.update(1);
+      game_state = game.update(1);
       it.remove();
     }else{
-      game.update(0);
+      game_state = game.update(0);
     }
+  }
+
+  if(game.TOTAL == game.current){
+    sw = GAME.END;
   }
 
   if(guest != null){
@@ -292,9 +298,8 @@ void keyPressed() {
   }
   if (keyCode == 'R') {
     println("R"); 
-    if (cleared) {
+    if (sw == GAME.END) {
       init();
-      sw = GAME.START;
     }
   }
 }
@@ -355,7 +360,7 @@ class Game {
   public Game(){
     TOTAL = 10;
     current = 0;
-    TLIMIT = 30*3;
+    TLIMIT = 60*3;
     t = TLIMIT;
     grabbed = 0;
   }
