@@ -6,6 +6,7 @@ import java.lang.Exception;
 
 Arrows arrows;
 LinkedList<Food> foodList;
+Game game;
 final int FOOD_SIZE = 5;
 boolean KEY_UP = false;
 boolean KEY_RIGHT = false;
@@ -38,6 +39,8 @@ void init() {
   arrows = new Arrows(c, width/10);
 
   foodList = new LinkedList<Food>();
+
+  game = new Game();
   /*
   for (int i = 0; i < FOOD_SIZE; i++) {
     println(random(0, width));
@@ -120,6 +123,10 @@ void draw_PLAY() {
         }
         JSONObject sending_json = new JSONObject();
         sending_json.setJSONArray("food", foods);
+        sending_json.setInt("current", game.current);
+        sending_json.setInt("total", game.TOTAL);
+        sending_json.setInt("tlimit", game.t);
+        sending_json.setInt("grabbed", game.grabbed);
 
         String nl = System.getProperty("line.separator");
         guest.write(sending_json.toString().replaceAll(nl, " ")+nl);
@@ -133,7 +140,10 @@ void draw_PLAY() {
     Food f = it.next();
     f.draw(arrows);
     if (f.crushed) {
+      game.update(1);
       it.remove();
+    }else{
+      game.update(0);
     }
   }
 
@@ -357,7 +367,7 @@ class Game {
     grabbed = 0;
   }
 
-  public String update(boolean grabbed){
+  public String update(int grabbed){
     this.grabbed += grabbed;
     t--;
     if(t == 0){
