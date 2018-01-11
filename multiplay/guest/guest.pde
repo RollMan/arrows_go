@@ -14,7 +14,6 @@ long st, en;
 int sw;
 
 int current, total, tlimit, grabbed;
-boolean gotJSONflag;
 
 Client guest;
 final int PORT = 25565;
@@ -43,7 +42,6 @@ void init() {
 
   foodList = new LinkedList<Food>();
 
-  gotJSONflag = false;
 }
 
 int mx = 0, my = 0;
@@ -78,7 +76,8 @@ void draw_PLAY() {
   long m = millis();
   fill(0);
   stroke(0);
-  text("TIME: "+(m-st)/100, 20, 20);
+  text("Next: " + tlimit, 20, 20);
+  text(current + "/" + total, width - 120, 20);
   //println(""+(m-st)/100);
   fill(255);
 
@@ -106,7 +105,6 @@ void draw_PLAY() {
       if (received_json == null) {
         println("Received data could not be parsed.");
       } else {
-        gotJSONflag = true;
         foodList = new LinkedList<Food>();  
         JSONArray items = received_json.getJSONArray("food");
         for (int i=0; i < items.size(); i++) {
@@ -119,6 +117,10 @@ void draw_PLAY() {
         total   = received_json.getInt("total");
         tlimit  = received_json.getInt("tlimit");
         grabbed = received_json.getInt("grabbed");
+        println("current:" + current);
+        println("total  :" + total);
+        println("tlimit :" + tlimit);
+        println("grabbed:" + grabbed);
       }
     }
   }
@@ -130,11 +132,7 @@ void draw_PLAY() {
       it.remove();
     }
   }
-
-  if (gotJSONflag && foodList.isEmpty()) {
-    en = m;
-    sw = GAME.END;
-  }
+  
 }
 
 void draw() {
