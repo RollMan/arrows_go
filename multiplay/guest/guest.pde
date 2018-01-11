@@ -13,6 +13,9 @@ boolean KEY_LEFT = false;
 long st, en;
 int sw;
 
+int current, total, tlimit, grabbed;
+boolean gotJSONflag;
+
 Client guest;
 final int PORT = 25565;
 
@@ -39,13 +42,8 @@ void init() {
   arrows = new Arrows(c, width/10);
 
   foodList = new LinkedList<Food>();
-  /*
-   for (int i = 0; i < FOOD_SIZE; i++) {
-   println(random(0, width));
-   Food foodPoint = new Food( new Point(random(0, width), random(0, height)) );
-   foodList.add(foodPoint);
-   }
-   */
+
+  gotJSONflag = false;
 }
 
 int mx = 0, my = 0;
@@ -86,19 +84,20 @@ void draw_PLAY() {
 
   arrows.draw();
 
-
-  JSONObject json = new JSONObject();
-  json.setFloat("x", arrows.c.x);
-  json.setFloat("y", arrows.c.y);
-  json.setFloat("vx", arrows.v.x);
-  json.setFloat("vy", arrows.v.y);
-  json.setFloat("sx", arrows.s.x);
-  json.setFloat("sy", arrows.s.y);
-  json.setFloat("sz", arrows.sz);
-  json.setFloat("rt", arrows.rt);
-  String nl = System.getProperty("line.separator");
-  println(json.toString().replaceAll(nl, " ")+nl);
-  guest.write(json.toString().replaceAll(nl, " ")+nl);
+  {
+    JSONObject json = new JSONObject();
+    json.setFloat("x", arrows.c.x);
+    json.setFloat("y", arrows.c.y);
+    json.setFloat("vx", arrows.v.x);
+    json.setFloat("vy", arrows.v.y);
+    json.setFloat("sx", arrows.s.x);
+    json.setFloat("sy", arrows.s.y);
+    json.setFloat("sz", arrows.sz);
+    json.setFloat("rt", arrows.rt);
+    String nl = System.getProperty("line.separator");
+    println(json.toString().replaceAll(nl, " ")+nl);
+    guest.write(json.toString().replaceAll(nl, " ")+nl);
+  }
 
   {
     String received_str = guest.readStringUntil('\n');
@@ -107,6 +106,7 @@ void draw_PLAY() {
       if (received_json == null) {
         println("Received data could not be parsed.");
       } else {
+        gotJSONflag = true;
         foodList = new LinkedList<Food>();  
         JSONArray items = received_json.getJSONArray("food");
         for (int i=0; i < items.size(); i++) {
@@ -115,6 +115,10 @@ void draw_PLAY() {
           float y=item.getFloat("y");
           foodList.add(new Food(new Point(x, y)));
         }
+        current = received_json.getInt("current");
+        total   = received_json.getInt("total");
+        tlimit  = received_json.getInt("tlimit");
+        grabbed = received_json.getInt("grabbed");
       }
     }
   }
@@ -127,7 +131,7 @@ void draw_PLAY() {
     }
   }
 
-  if (false && foodList.isEmpty()) {
+  if (gotJSONflag && foodList.isEmpty()) {
     en = m;
     sw = GAME.END;
   }
