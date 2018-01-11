@@ -358,7 +358,7 @@ class Game {
   }
 
   public String update(boolean grabbed){
-    self.grabbed += grabbed;
+    this.grabbed += grabbed;
     t--;
     if(t == 0){
       t = TLIMIT;
