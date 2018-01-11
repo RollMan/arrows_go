@@ -78,6 +78,7 @@ void draw_PLAY() {
   stroke(0);
   text("Next: " + tlimit, 20, 20);
   text(current + "/" + total, width - 120, 20);
+  text("score: " + grabbed, width - 120, 40);
   //println(""+(m-st)/100);
   fill(255);
 
