@@ -6,6 +6,7 @@ import java.lang.Exception;
 
 Arrows arrows;
 LinkedList<Food> foodList;
+Game game;
 final int FOOD_SIZE = 5;
 boolean KEY_UP = false;
 boolean KEY_RIGHT = false;
@@ -38,6 +39,8 @@ void init() {
   arrows = new Arrows(c, width/10);
 
   foodList = new LinkedList<Food>();
+
+  game = new Game();
   /*
   for (int i = 0; i < FOOD_SIZE; i++) {
     println(random(0, width));
@@ -120,6 +123,10 @@ void draw_PLAY() {
         }
         JSONObject sending_json = new JSONObject();
         sending_json.setJSONArray("food", foods);
+        sending_json.setInt("current", game.current);
+        sending_json.setInt("total", game.TOTAL);
+        sending_json.setInt("tlimit", game.t);
+        sending_json.setInt("grabbed", game.grabbed);
 
         String nl = System.getProperty("line.separator");
         guest.write(sending_json.toString().replaceAll(nl, " ")+nl);
@@ -133,7 +140,10 @@ void draw_PLAY() {
     Food f = it.next();
     f.draw(arrows);
     if (f.crushed) {
+      game.update(1);
       it.remove();
+    }else{
+      game.update(0);
     }
   }
 
@@ -334,5 +344,42 @@ class Food {
       stroke(b);
     }
     ellipse(pos.x, pos.y, 20, 20);
+  }
+}
+class Game {
+  public int TOTAL;
+  public int current;
+  public int TLIMIT;
+  public int t;
+  public int grabbed;
+  public Game(){
+    TOTAL = 10;
+    current = 0;
+    TLIMIT = 30*3;
+    t = 0;
+    grabbed = 0;
+  }
+  public Game(int total, int tlimit){
+    TOTAL = total;
+    current = 0;
+    TLIMIT = tlimit;
+    t = TLIMIT;
+    grabbed = 0;
+  }
+
+  public String update(int grabbed){
+    this.grabbed += grabbed;
+    t--;
+    if(t == 0){
+      t = TLIMIT;
+      current++;
+      if(current == TOTAL){
+        return "FIN";
+      }else{
+        return "TL";
+      }
+    }else{
+      return "None";
+    }
   }
 }
