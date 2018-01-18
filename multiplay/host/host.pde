@@ -338,7 +338,7 @@ class Game {
   public Game(){
     TOTAL = 10 + 1;
     current = 0;
-    TLIMIT = 60*7;
+    TLIMIT = 60*3;
     t = TLIMIT;
     grabbed = 0;
   }
