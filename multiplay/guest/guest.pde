@@ -81,10 +81,12 @@ void communicateJSON(){
         total   = received_json.getInt("total");
         tlimit  = received_json.getInt("tlimit");
         grabbed = received_json.getInt("grabbed");
+        sw      = received_json.getInt("start");
         println("current:" + current);
         println("total  :" + total);
         println("tlimit :" + tlimit);
         println("grabbed:" + grabbed);
+        println("sw     :" + sw);
       }
     }
   }
@@ -103,14 +105,15 @@ void draw_START() {
   fill(0);
   textSize(30);
   text("ARROWS GO", width/5, height/3);
-  text("-PRESS ANY KEY TO START-", width/10, height*2/3);
+  text("-PREASE WAIT HOST TO START-", width/10, height*2/3);
   textSize(12);
+  communicateJSON();
 }
 
 void draw_END() {
   background(0);
   text(str, mx, my-=2);
-  text("   Time: "+ (en-st)/100, width*2/3, height/2);
+  text("score: " + grabbed, width*2/3, height/2);
   text("-Press R to restart-", width*2/3, height/2+15);
   cleared=true;
   communicateJSON();
@@ -129,18 +132,13 @@ void draw_PLAY() {
 
   communicateJSON();
 
-  for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
-    Food f = it.next();
-    f.draw(arrows);
-    if (f.crushed) {
-      it.remove();
-    }
+  if( !foodList.isEmpty()){
+    foodList.getFirst().draw(arrows);
   }
 
   if(total == current + 1){
     sw = GAMESTATE.END;
   }
-  
   
 }
 
@@ -253,7 +251,7 @@ class Arrows {
 
 void keyPressed() {
   if (sw == GAMESTATE.START) {
-    sw = GAMESTATE.PLAY;
+    //sw = GAMESTATE.PLAY;
   }
   if (key == CODED) {
     if (keyCode == UP) {
