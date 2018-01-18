@@ -76,7 +76,7 @@ void draw_PLAY() {
   fill(0);
   stroke(0);
   text("Next: " + tlimit, 20, 20);
-  text(current + "/" + total, width - 120, 20);
+  text(current + "/" + (total - 1), width - 120, 20);
   text("score: " + grabbed, width - 120, 40);
   fill(255);
 
