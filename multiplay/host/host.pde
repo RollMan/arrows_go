@@ -142,8 +142,25 @@ void draw_PLAY() {
   communicateJSON();
   
   arrows.draw();
-
+ 
   String game_state = "None";
+
+/*
+  if( foodList.isEmpty() ){
+    game_state = game.update(0);
+  }else{
+    Food f = foodList.getFirst();
+    if(f.crushed){
+      game_state = game.update(1);
+      foodList.remove();
+    }else{
+      game_state = game.update(0);
+      if(game_state == "TL"){
+        foodList.remove();
+      }
+    }
+  }
+  */
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
     Food f = it.next();
     f.draw(arrows);
@@ -152,8 +169,6 @@ void draw_PLAY() {
       it.remove();
     }else{
       game_state = game.update(0);
-      println(game_state);
-      println(game.current);
       if(game_state == "TL"){
         it.remove();
       }
