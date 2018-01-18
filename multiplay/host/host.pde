@@ -54,40 +54,7 @@ void init() {
 
 int mx = 0, my = 0;
 
-interface GAMESTATE {
-  int 
-    START = 0, 
-    PLAY = 1, 
-    END = 2;
-};
-
-void draw_START() {
-  background(255);
-  stroke(0);
-  fill(0);
-  textSize(30);
-  text("ARROWS GO", width/5, height/3);
-  text("-PRESS ANY KEY TO START-", width/10, height*2/3);
-  textSize(12);
-}
-
-void draw_END() {
-  background(0);
-  text(str, mx, my-=2);
-  text("   Time: "+ (en-st)/100, width*2/3, height/2);
-  text("-Press R to restart-", width*2/3, height/2+15);
-  cleared=true;
-}
-
-void draw_PLAY() {
-  background(255);
-  fill(0);
-  stroke(0);
-  text("Next: " + game.TLIMIT, 20, 20);
-  text(game.current + "/" + game.TOTAL, width - 120, 20);
-  text("score: " + game.grabbed, width - 120, 40);
-  fill(255);
-
+void communicateJSON(){
   Client guest = host.available();
   if(guest != null){
     String received_str = guest.readStringUntil('\n');
@@ -135,8 +102,46 @@ void draw_PLAY() {
       }
     }
   }
-  arrows.draw();
+}
 
+interface GAMESTATE {
+  int 
+    START = 0, 
+    PLAY = 1, 
+    END = 2;
+};
+
+void draw_START() {
+  background(255);
+  stroke(0);
+  fill(0);
+  textSize(30);
+  text("ARROWS GO", width/5, height/3);
+  text("-PRESS ANY KEY TO START-", width/10, height*2/3);
+  textSize(12);
+}
+
+void draw_END() {
+  background(0);
+  text(str, mx, my-=2);
+  text("   Time: "+ (en-st)/100, width*2/3, height/2);
+  text("-Press R to restart-", width*2/3, height/2+15);
+  cleared=true;
+  communicateJSON();
+}
+
+void draw_PLAY() {
+  background(255);
+  fill(0);
+  stroke(0);
+  text("Next: " + game.t, 20, 20);
+  text(game.current + "/" + (game.TOTAL - 1), width - 120, 20);
+  text("score: " + game.grabbed, width - 120, 40);
+  fill(255);
+
+  communicateJSON();
+  
+  arrows.draw();
 
   String game_state = "None";
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
@@ -154,23 +159,15 @@ void draw_PLAY() {
       }
     }
   }
+  
   if(game_state == "TL"){
     foodList.add( new Food( new Point(mouseX, mouseY) ) );
   }
 
-  if(game.TOTAL == game.current){
+  if(game.TOTAL == game.current + 1){
     sw = GAMESTATE.END;
   }
-
-  if(guest != null){
-  }
-
-/*
-  if (foodList.isEmpty()) {
-    en = m;
-    sw = GAMESTATE.END;
-  }
-  */
+  
 }
 
 void draw() {
@@ -368,7 +365,7 @@ class Game {
   public int t;
   public int grabbed;
   public Game(){
-    TOTAL = 10;
+    TOTAL = 10 + 1;
     current = 0;
     TLIMIT = 60*3;
     t = TLIMIT;
