@@ -96,6 +96,7 @@ void communicateJSON(){
         sending_json.setInt("total", game.TOTAL);
         sending_json.setInt("tlimit", game.t);
         sending_json.setInt("grabbed", game.grabbed);
+        sending_json.setInt("start", sw);
 
         String nl = System.getProperty("line.separator");
         guest.write(sending_json.toString().replaceAll(nl, " ")+nl);
