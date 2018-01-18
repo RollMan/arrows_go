@@ -40,6 +40,7 @@ void init() {
   arrows = new Arrows(c, width/10);
 
   foodList = new LinkedList<Food>();
+  foodList.add(new Food(new Point(100, 100)));
 
   game = new Game();
   /*
@@ -137,7 +138,7 @@ void draw_PLAY() {
   arrows.draw();
 
 
-  String game_state;
+  String game_state = "None";
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
     Food f = it.next();
     f.draw(arrows);
@@ -146,7 +147,15 @@ void draw_PLAY() {
       it.remove();
     }else{
       game_state = game.update(0);
+      println(game_state);
+      println(game.current);
+      if(game_state == "TL"){
+        it.remove();
+      }
     }
+  }
+  if(game_state == "TL"){
+    foodList.add( new Food( new Point(mouseX, mouseY) ) );
   }
 
   if(game.TOTAL == game.current){
@@ -318,8 +327,8 @@ void keyReleased() {
 }
 
 void mouseReleased(){
-  Food foodPoint = new Food( new Point(mouseX, mouseY) );
-  foodList.add(foodPoint);
+  //Food foodPoint = new Food( new Point(mouseX, mouseY) );
+  //foodList.add(foodPoint);
 }
 
 class Food {
@@ -379,7 +388,8 @@ class Game {
       t = TLIMIT;
       current++;
       if(current == TOTAL){
-        return "FIN";
+        //return "FIN";
+        return "TL";
       }else{
         return "TL";
       }
