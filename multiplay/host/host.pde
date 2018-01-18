@@ -137,8 +137,9 @@ void draw_PLAY() {
   }
   arrows.draw();
 
-
   String game_state = "None";
+
+/*
   if( foodList.isEmpty() ){
     game_state = game.update(0);
   }else{
@@ -153,7 +154,7 @@ void draw_PLAY() {
       }
     }
   }
-  /*
+  */
   for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
     Food f = it.next();
     f.draw(arrows);
@@ -162,14 +163,11 @@ void draw_PLAY() {
       it.remove();
     }else{
       game_state = game.update(0);
-      println(game_state);
-      println(game.current);
       if(game_state == "TL"){
         it.remove();
       }
     }
   }
-  */
   if(game_state == "TL"){
     foodList.add( new Food( new Point(mouseX, mouseY) ) );
   }
