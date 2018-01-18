@@ -43,13 +43,6 @@ void init() {
   foodList.add(new Food(new Point(100, 100)));
 
   game = new Game();
-  /*
-  for (int i = 0; i < FOOD_SIZE; i++) {
-    println(random(0, width));
-    Food foodPoint = new Food( new Point(random(0, width), random(0, height)) );
-    foodList.add(foodPoint);
-  }
-  */
 }
 
 int mx = 0, my = 0;
@@ -126,7 +119,7 @@ void draw_START() {
 void draw_END() {
   background(0);
   text(str, mx, my-=2);
-  text("   Time: "+ (en-st)/100, width*2/3, height/2);
+  text("   score: " + game.grabbed, width*2/3, height/2);
   text("-Press R to restart-", width*2/3, height/2+15);
   cleared=true;
   communicateJSON();
@@ -162,21 +155,7 @@ void draw_PLAY() {
       }
     }
   }
-  /*
-  for (Iterator<Food> it = foodList.iterator(); it.hasNext(); ) {
-    Food f = it.next();
-    f.draw(arrows);
-    if (f.crushed) {
-      game_state = game.update(1);
-      it.remove();
-    }else{
-      game_state = game.update(0);
-      if(game_state == "TL"){
-        it.remove();
-      }
-    }
-  }
-  */
+  
   if(game_state == "TL"){
     foodList.add( new Food( new Point(mouseX, mouseY) ) );
   }
@@ -242,33 +221,8 @@ class Arrows {
     this.sz = sz;
     this.rt = rt;
   }
-  void move() {
-    float ma=PI/40, mi=-ma;
-    /*
-    if (KEY_UP) {
-      arrows.forward();
-    }
-    if (KEY_RIGHT) {
-      rt+=PI/400;
-    }
-    if (KEY_LEFT) {
-      //rt-=PI/400;
-    }
-    rt=min(rt, ma);
-    rt=max(rt, mi);
-    v=v.spin(rt);
-
-    float ny=c.y+s.y/20;
-    float nx=c.x+s.x/20;
-    if (0<=ny&&ny<=height) c.y=ny;
-    if (0<=nx&&nx<=width) c.x=nx;
-    s.x*=(1-u);
-    s.y*=(1-u);
-    rt*=(1-u);
-    */
-  }
+  
   void draw() {
-    move();
     stroke(0);  
     float p=3.0/8.0;
     line(c.x, c.y, c.x+v.x, c.y+v.y);
