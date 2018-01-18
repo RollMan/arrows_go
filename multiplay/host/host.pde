@@ -120,6 +120,7 @@ void draw_START() {
   text("ARROWS GO", width/5, height/3);
   text("-PRESS ANY KEY TO START-", width/10, height*2/3);
   textSize(12);
+  communicateJSON();
 }
 
 void draw_END() {
