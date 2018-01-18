@@ -27,7 +27,7 @@ void setup() {
   init();
   String[] stra = loadStrings("./finishMessage.txt");
   str = String.join("\n", stra);
-  sw=GAME.START;
+  sw=GAMESTATE.START;
 
   //guest = new Client(this, "192.168.43.194", PORT);
   guest = new Client(this, "127.0.0.1", PORT);
@@ -46,7 +46,7 @@ void init() {
 
 int mx = 0, my = 0;
 
-interface GAME {
+interface GAMESTATE {
   int 
     START = 0, 
     PLAY = 1, 
@@ -73,13 +73,11 @@ void draw_END() {
 
 void draw_PLAY() {
   background(255);
-  long m = millis();
   fill(0);
   stroke(0);
   text("Next: " + tlimit, 20, 20);
   text(current + "/" + total, width - 120, 20);
   text("score: " + grabbed, width - 120, 40);
-  //println(""+(m-st)/100);
   fill(255);
 
   arrows.draw();
@@ -138,13 +136,13 @@ void draw_PLAY() {
 
 void draw() {
   switch (sw) {
-  case GAME.START:  
+  case GAMESTATE.START:  
     draw_START();
     break;
-  case GAME.END:  
+  case GAMESTATE.END:  
     draw_END();
     break;
-  case GAME.PLAY:  
+  case GAMESTATE.PLAY:  
     draw_PLAY();
     break;
   }
@@ -244,8 +242,8 @@ class Arrows {
 };
 
 void keyPressed() {
-  if (sw == GAME.START) {
-    sw = GAME.PLAY;
+  if (sw == GAMESTATE.START) {
+    sw = GAMESTATE.PLAY;
   }
   if (key == CODED) {
     if (keyCode == UP) {
@@ -262,7 +260,7 @@ void keyPressed() {
     println("R"); 
     if (cleared) {
       init();
-      sw = GAME.START;
+      sw = GAMESTATE.START;
     }
   }
 }

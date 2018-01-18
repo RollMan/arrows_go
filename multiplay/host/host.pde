@@ -81,11 +81,11 @@ void draw_END() {
 
 void draw_PLAY() {
   background(255);
-  long m = millis();
   fill(0);
   stroke(0);
-  text("TIME: "+(m-st)/100, 20, 20);
-  //println(""+(m-st)/100);
+  text("Next: " + game.TLIMIT, 20, 20);
+  text(game.current + "/" + game.TOTAL, width - 120, 20);
+  text("score: " + game.grabbed, width - 120, 40);
   fill(255);
 
   Client guest = host.available();
@@ -376,6 +376,7 @@ class Food {
     ellipse(pos.x, pos.y, 20, 20);
   }
 }
+
 class Game {
   public int TOTAL;
   public int current;
