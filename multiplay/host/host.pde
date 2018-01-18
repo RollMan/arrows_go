@@ -31,7 +31,7 @@ void setup() {
 }
 
 void init() {
-  sw=GAME.START;
+  sw=GAMESTATE.START;
 
   st=millis();
   en=st*100;
@@ -53,7 +53,7 @@ void init() {
 
 int mx = 0, my = 0;
 
-interface GAME {
+interface GAMESTATE {
   int 
     START = 0, 
     PLAY = 1, 
@@ -150,7 +150,7 @@ void draw_PLAY() {
   }
 
   if(game.TOTAL == game.current){
-    sw = GAME.END;
+    sw = GAMESTATE.END;
   }
 
   if(guest != null){
@@ -159,20 +159,20 @@ void draw_PLAY() {
 /*
   if (foodList.isEmpty()) {
     en = m;
-    sw = GAME.END;
+    sw = GAMESTATE.END;
   }
   */
 }
 
 void draw() {
   switch (sw) {
-  case GAME.START:  
+  case GAMESTATE.START:  
     draw_START();
     break;
-  case GAME.END:  
+  case GAMESTATE.END:  
     draw_END();
     break;
-  case GAME.PLAY:  
+  case GAMESTATE.PLAY:  
     draw_PLAY();
     break;
   }
@@ -282,8 +282,8 @@ class Arrows {
 };
 
 void keyPressed() {
-  if (sw == GAME.START) {
-    sw = GAME.PLAY;
+  if (sw == GAMESTATE.START) {
+    sw = GAMESTATE.PLAY;
   }
   if (key == CODED) {
     if (keyCode == UP) {
@@ -298,7 +298,7 @@ void keyPressed() {
   }
   if (keyCode == 'R') {
     println("R"); 
-    if (sw == GAME.END) {
+    if (sw == GAMESTATE.END) {
       init();
     }
   }
