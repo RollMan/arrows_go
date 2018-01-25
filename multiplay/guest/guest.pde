@@ -21,6 +21,9 @@ final int PORT = 25565;
 File finishMessageFile;
 boolean cleared;
 String str;
+
+String ipaddress = "";
+
 void setup() {
   size(500, 500);
   frameRate(60);
@@ -29,8 +32,9 @@ void setup() {
   str = String.join("\n", stra);
   sw=GAMESTATE.START;
 
-  //guest = new Client(this, "192.168.43.194", PORT);
-  guest = new Client(this, "127.0.0.1", PORT);
+  guest = null;
+  // guest = new Client(this, "192.168.43.194", PORT);
+  // guest = new Client(this, "127.0.0.1", PORT);
 }
 
 void init() {
@@ -47,6 +51,7 @@ void init() {
 int mx = 0, my = 0;
 
 void communicateJSON(){
+  if( guest == null) return;
   {
     JSONObject json = new JSONObject();
     json.setFloat("x", arrows.c.x);
@@ -105,8 +110,12 @@ void draw_START() {
   fill(0);
   textSize(30);
   text("ARROWS GO", width/5, height/3);
-  text("-PREASE WAIT HOST TO START-", width/10, height*2/3);
+  
+  textSize(20);
+  text("-PREASE INPUT THE HOST'S IP ADDRESS-", width/10, height*2/3);
+  
   textSize(12);
+  text(ipaddress,width/3,height*4/5);
   communicateJSON();
 }
 
@@ -253,6 +262,15 @@ void keyPressed() {
   if (sw == GAMESTATE.START) {
     //sw = GAMESTATE.PLAY;
   }
+  //println(keyCode + ":" + key); 
+  
+ if (key == ENTER || key == RETURN ){
+    println(ipaddress + ":" + (guest == null) );
+    if(guest == null){
+      guest = new Client(this, ipaddress, PORT); 
+    }
+  }
+  
   if (key == CODED) {
     if (keyCode == UP) {
       KEY_UP=true;
@@ -264,6 +282,15 @@ void keyPressed() {
       KEY_LEFT=true;
     }
   }
+  
+  if (('0'<=keyCode&&keyCode<='9')||keyCode == '.') {
+    ipaddress = ipaddress +  String.valueOf((char)keyCode); 
+  }
+  
+  if (key == DELETE || key == BACKSPACE){
+    ipaddress = ipaddress.substring(0,ipaddress.length()-1);
+  } 
+  
   if (keyCode == 'R') {
     println("R"); 
     if (cleared) {
