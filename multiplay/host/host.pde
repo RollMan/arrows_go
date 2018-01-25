@@ -28,10 +28,12 @@ void setup() {
   str = String.join("\n", stra);
 
   host = new Server(this, PORT);
+
+  println("localhost:" + PORT + " is opened");
 }
 
 void init() {
-  sw=GAMESTATE.START;
+  sw=GAMESTATE.WAITCONNECT;
 
   st=millis();
   en=st*100;
@@ -100,20 +102,36 @@ void communicateJSON(){
 
 interface GAMESTATE {
   int 
+    WAITCONNECT = -1,
     START = 0, 
     PLAY = 1, 
     END = 2;
 };
 
-void draw_START() {
+void draw_WAITCONNECT(){
   background(255);
   stroke(0);
   fill(0);
   textSize(30);
   text("ARROWS GO", width/5, height/3);
-  text("-PRESS ANY KEY TO START-", width/10, height*2/3);
+  text("- Waiting for a connection ... -", width/10, height*2/3);
+  text("localhost:" + PORT + " is opened", width/10, height*2/3+30);
   textSize(12);
-  communicateJSON();
+}
+
+void draw_START() {
+  Client guest = host.available();
+  if(guest != null){
+    background(255);
+    stroke(0);
+    fill(0);
+    textSize(30);
+    text("ARROWS GO", width/5, height/3);
+    text("-PRESS ANY KEY TO START-", width/10, height*2/3);
+    text("Client: " + guest.ip(), width/10, height*2/3+30);
+    textSize(12);
+    communicateJSON();
+  }
 }
 
 void draw_END() {
@@ -168,6 +186,9 @@ void draw_PLAY() {
 
 void draw() {
   switch (sw) {
+  case GAMESTATE.WAITCONNECT:
+    draw_WAITCONNECT();
+    break;
   case GAMESTATE.START:  
     draw_START();
     break;
@@ -258,6 +279,13 @@ class Arrows {
   }
 };
 
+void serverEvent(Server srv, Client cl){
+  println("serverEvent: " + sw);
+  if(sw == GAMESTATE.WAITCONNECT){
+    sw = GAMESTATE.START;
+  }
+}
+
 void keyPressed() {
   if (sw == GAMESTATE.START) {
     sw = GAMESTATE.PLAY;
@@ -274,7 +302,6 @@ void keyPressed() {
     }
   }
   if (keyCode == 'R') {
-    println("R"); 
     if (sw == GAMESTATE.END) {
       init();
     }
