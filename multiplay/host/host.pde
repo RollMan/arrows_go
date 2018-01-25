@@ -20,6 +20,8 @@ final int PORT = 25565;
 File finishMessageFile;
 boolean cleared;
 String str;
+
+String ip_address;
 void setup() {
   size(500, 500);
   frameRate(60);
@@ -29,7 +31,8 @@ void setup() {
 
   host = new Server(this, PORT);
 
-  println("localhost:" + PORT + " is opened");
+  ip_address = loadStrings("http://checkip.amazonaws.com")[0];
+  println(ip_address + ":" + PORT);
 }
 
 void init() {
@@ -115,8 +118,8 @@ void draw_WAITCONNECT(){
   textSize(30);
   text("ARROWS GO", width/5, height/3);
   text("- Waiting for a connection ... -", width/10, height*2/3);
-  text("localhost:" + PORT + " is opened", width/10, height*2/3+30);
-  textSize(12);
+  textSize(18);
+  text(ip_address + ":" + PORT + " is opened", width/10, height*2/3+40);
 }
 
 void draw_START() {
