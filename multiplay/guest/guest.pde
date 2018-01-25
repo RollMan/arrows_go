@@ -126,6 +126,10 @@ void draw_END() {
   text("-Press R to restart-", width*2/3, height/2+15);
   cleared=true;
   communicateJSON();
+  if (guest != null){
+    guest.stop();
+    guest=null;
+  }
 }
 
 void draw_PLAY() {
