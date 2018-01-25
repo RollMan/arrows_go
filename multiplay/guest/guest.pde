@@ -112,7 +112,11 @@ void draw_START() {
   text("ARROWS GO", width/5, height/3);
   
   textSize(20);
-  text("-PREASE INPUT THE HOST'S IP ADDRESS-", width/10, height*2/3);
+  if (guest == null){
+    text("-PREASE INPUT THE HOST'S IP ADDRESS-", width/10, height*2/3);
+  }else{
+    text("-PREASE WAIT HOST TO START-", width/10, height*2/3);
+  }
   
   textSize(12);
   text(ipaddress,width/3,height*4/5);
@@ -271,7 +275,11 @@ void keyPressed() {
  if (key == ENTER || key == RETURN ){
     println(ipaddress + ":" + (guest == null) );
     if(guest == null){
-      guest = new Client(this, ipaddress, PORT); 
+      try{
+        guest = new Client(this, ipaddress, PORT); 
+      }catch (Exception e){
+        guest = null;
+      }
     }
   }
   
